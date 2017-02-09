@@ -19,7 +19,7 @@
     requirements: /home/{{ user }}/CTFd/requirements.txt
 
 - name: pull ctfd
-  git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes
+  git: repo=https://github.com/isislab/CTFd.git dest=/home/{{ user }}/CTFd force=yes
   register: ctfd_pulled
 
 - name: make gunicorn dir
