@@ -1,0 +1,10 @@
+---
+- name: include vars
+  include_vars: common.yml
+
+- name: create user
+  become: yes
+  user:
+    name: "{{ user }}"
+    system: yes
+    shell: /sbin/nologin
