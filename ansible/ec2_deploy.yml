@@ -2,15 +2,8 @@
   - name: Provision instances with EC2
     hosts: local
     gather_facts: False
-    # Necessary Variables for creating/provisioning the EC2 Instance
-    vars:
-      instance_type: t2.nano
-      security_group: ctf-web
-      image: ami-ede2e889
-      region: eu-west-2
-      keypair: ctf-deploy
-      count: 1
-      domain: example-ctf.win
+    include_vars: common.yml
+    include_vars: deploy.yml
 
     tasks:
       - name: Launch the new EC2 Instance

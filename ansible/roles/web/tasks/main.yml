@@ -1,4 +1,6 @@
 ---
+- name: include vars
+  include_vars: common.yml
 - name: install packages
   become: yes
   action: apt pkg={{item}} state=installed
@@ -17,11 +19,16 @@
 
 - name: copy gunicorn conf
   become: yes
-  copy: src=ctfd_gunicorn.conf dest=/etc/gunicorn.d/ctfd force=yes
+  copy: src=files/ctfd_gunicorn.conf dest=/etc/gunicorn.d/ctfd force=yes
 
 - name: write the nginx config file
   become: yes
-  copy: src=ctfd_nginx.conf dest=/etc/nginx/sites-enabled/ctfd force=yes
+  template:
+    src: files/ctfd_nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/ctfd
+    owner: root
+    group: root
+    mode: 0644
   notify:
       - restart nginx
 
