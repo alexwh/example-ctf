@@ -1,13 +1,17 @@
 ---
 - hosts: all
   gather_facts: False
+  pre_tasks:
+  - name: Install python for Ansible
+    raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
+    register: output
+    changed_when: output.stdout != ""
+  - setup: # aka gather_facts
 
-  tasks:
-    - name: install python 2
-      raw: sudo bash -c "test -e /usr/bin/python || (apt -qqy update && apt install -qy python-minimal)"
 - hosts: ctf-web
   roles:
     - web
+
 - hosts: ctf-chal
   roles:
     - chal
