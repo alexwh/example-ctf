@@ -38,7 +38,7 @@
         with_items: "{{ ec2.instances }}"
         args:
           tags:
-            Name: ctf-web
+            Name: ctf
 
       - name: add dns to route53
         local_action: route53
