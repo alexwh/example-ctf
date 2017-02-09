@@ -1,6 +1,6 @@
 ---
   - name: Provision instances with EC2
-    hosts: local
+    hosts: localhost
     gather_facts: False
 
     tasks:
