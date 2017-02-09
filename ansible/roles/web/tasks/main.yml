@@ -22,7 +22,6 @@
   git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes
   register: ctfd_pulled
 
-
 - name: make gunicorn dir
   become: yes
   file: path=/etc/gunicorn.d state=directory
@@ -35,6 +34,8 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+      - restart gunicorn
 
 - name: remove default nginx config
   become: yes
