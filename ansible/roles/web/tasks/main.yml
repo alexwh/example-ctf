@@ -1,21 +1,27 @@
 ---
 - name: include vars
   include_vars: common.yml
+
 - name: install packages
   become: yes
   action: apt pkg={{item}} state=installed
   with_items:
     - nginx
     - gunicorn
+    - build-essential
+    - python-dev
+    - python-pip
+    - libffi-dev
+
+- name: install pip modules
+  become: yes
+  pip:
+    requirements: /home/{{ user }}/CTFd/requirements.txt
 
 - name: pull ctfd
   git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes
   register: ctfd_pulled
 
-# - name: run prepare.sh
-#   shell: ~/CTFd/prepare.sh
-#   register: prepareoutput
-#   when: ctfd_pulled|success
 
 - name: make gunicorn dir
   become: yes
@@ -23,9 +29,18 @@
 
 - name: copy gunicorn conf
   become: yes
-  copy: src=files/ctfd_gunicorn.conf dest=/etc/gunicorn.d/ctfd force=yes
+  template:
+    src: files/ctfd_gunicorn.conf.j2
+    dest: /etc/gunicorn.d/ctfd
+    owner: root
+    group: root
+    mode: 0644
 
-- name: write the nginx config file
+- name: remove default nginx config
+  become: yes
+  file: path=/etc/nginx/site-enabled/default state=absent
+
+- name: write the ctfd nginx config file
   become: yes
   template:
     src: files/ctfd_nginx.conf.j2
@@ -35,6 +50,9 @@
     mode: 0644
   notify:
       - restart nginx
+
+- name: ensure gunicorn is running and enabled
+  service: name=gunicorn state=started enabled=yes
 
 - name: ensure nginx is running and enabled
   service: name=nginx state=started enabled=yes
