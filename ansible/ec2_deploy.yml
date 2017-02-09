@@ -2,10 +2,11 @@
   - name: Provision instances with EC2
     hosts: local
     gather_facts: False
-    include_vars: common.yml
-    include_vars: deploy.yml
 
     tasks:
+      - name: include vars
+        include_vars:
+            dir: vars/
       - name: Launch the new EC2 Instance
         local_action: ec2
                       group={{ security_group }}
