@@ -1,0 +1,9 @@
+---
+- hosts: ctf-web
+  roles:
+      #    - common
+    - web
+- hosts: ctf-chal
+  roles:
+      #- common
+    - chal
