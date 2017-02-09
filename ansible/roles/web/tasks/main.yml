@@ -13,14 +13,15 @@
     - python-pip
     - libffi-dev
 
-- name: install pip modules
-  become: yes
-  pip:
-    requirements: /home/{{ user }}/CTFd/requirements.txt
-
 - name: pull ctfd
   git: repo=https://github.com/isislab/CTFd.git dest=/home/{{ user }}/CTFd force=yes
   register: ctfd_pulled
+
+- name: install pip modules
+  become: yes
+  when: ctfd_pulled|success
+  pip:
+    requirements: /home/{{ user }}/CTFd/requirements.txt
 
 - name: make gunicorn dir
   become: yes
