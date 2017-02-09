@@ -2,8 +2,8 @@ CONFIG = {
     'mode': 'wsgi',
     'working_dir': '/home/{{ user }}/CTFd',
       'python': '/usr/bin/python',
-    'user': 'daemon',
-    'group': 'daemon',
+    'user': '{{ user }}',
+    'group': '{{ user }}',
     'args': (
         '--bind=0.0.0.0:8000',
         '--workers=1',
