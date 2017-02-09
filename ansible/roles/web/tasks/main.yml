@@ -12,10 +12,14 @@
   git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes
   register: ctfd_pulled
 
-- name: run prepare.sh
-  shell: ~/CTFd/prepare.sh
-  register: prepareoutput
-  when: ctfd_pulled|success
+# - name: run prepare.sh
+#   shell: ~/CTFd/prepare.sh
+#   register: prepareoutput
+#   when: ctfd_pulled|success
+
+- name: make gunicorn dir
+  become: yes
+  file: path=/etc/gunicorn.d state=directory
 
 - name: copy gunicorn conf
   become: yes
