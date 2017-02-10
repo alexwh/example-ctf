@@ -12,7 +12,6 @@
     - python-dev
     - python-pip
     - libffi-dev
-    - haveged
 
 - name: pull ctfd
   become: yes
@@ -44,13 +43,6 @@
 - name: remove default nginx config
   become: yes
   file: path=/etc/nginx/site-enabled/default state=absent
-
-- name: ensure haveged is running and enabled
-  service: name=haveged state=started enabled=yes
-
-- name: generate nginx dhparam
-  become: yes
-  shell: openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
 
 - name: write the ctfd nginx config file
   become: yes
