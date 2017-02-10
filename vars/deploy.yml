@@ -3,4 +3,4 @@ security_group: ctf-web
 image: ami-ede2e889
 region: eu-west-2
 keypair: ctf-deploy
-count: 1
+count: 2
