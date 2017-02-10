@@ -25,18 +25,26 @@
                       state=absent
         with_items: "{{ ec2.instances }}"
 
+      - name: get dns from route53
+        local_action: route53
+                      command=get
+                      zone={{ domain }}
+                      record={{ item }}{{ domain }}
+                      type=A
+        with_items: ["", "chal."]
+        register: dns
+
       - name: remove dns from route53
         local_action: route53
                       command=delete
                       zone={{ domain }}
-                      record={{ domain }}
-                      type=A
-                      ttl=60
-                      value={{ item.public_ip_address }}
-                      wait=yes
-        with_items: "{{ ec2.instances }}"
+                      record={{ item.set.record }}
+                      type={{ item.set.type }}
+                      ttl={{ item.set.ttl }}
+                      value={{ item.set.value }}
+        with_items: "{{ dns.results }}"
 
-      - name: Terminate the new EC2 Instance
+      - name: Terminate the new EC2 Instance(s)
         local_action: ec2
                       state=absent
                       region={{ region }}
