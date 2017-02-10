@@ -55,6 +55,18 @@
   notify:
       - restart nginx
 
+- name: copy the ctfd.db
+  become: yes
+  copy:
+    src: files/ctfd.db
+    dest: /home/{{ user }}/CTFd/CTFd/
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    mode: 0644
+  notify:
+      - restart nginx
+      - restart gunicorn
+
 - name: ensure gunicorn is running and enabled
   service: name=gunicorn state=started enabled=yes
 

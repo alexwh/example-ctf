@@ -1,4 +1,24 @@
 ---
+  - name: backup
+    hosts: ctf-web
+    tasks:
+      - name: include vars
+        include_vars:
+            dir: vars/
+
+      - name: stop services
+        become: yes
+        service: name={{ item }} state=stopped
+        with_items: ["gunicorn", "nginx"]
+
+      - name: copy db from web
+        become: yes
+        fetch:
+            src: /home/{{ user }}/CTFd/CTFd/ctfd.db
+            dest: files/
+            fail_on_missing: yes
+            flat: yes
+
   - name: Terminate EC2 instances
     hosts: localhost
     gather_facts: False
