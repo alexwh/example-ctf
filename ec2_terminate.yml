@@ -13,6 +13,7 @@
 
       - name: copy db from web
         become: yes
+        tags: dbcopy
         fetch:
             src: /home/{{ user }}/CTFd/CTFd/ctfd.db
             dest: files/
