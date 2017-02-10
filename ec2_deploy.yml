@@ -65,7 +65,6 @@
                       type=A
                       ttl=60
                       value={{ ec2.instances[0].public_ip }}
-                      wait=yes
                       overwrite=yes
 
       - name: add chal dns to route53
@@ -76,5 +75,4 @@
                       type=A
                       ttl=60
                       value={{ ec2.instances[1].public_ip }}
-                      wait=yes
                       overwrite=yes
