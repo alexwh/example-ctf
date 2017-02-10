@@ -12,7 +12,15 @@
 
 - hosts: ctf-web
   roles:
-    - web
+    - role: web
+    - role: ansible-letsencrypt
+      letsencrypt_webroot_path: /var/www/html
+      letsencrypt_email: admin@example-ctf.win
+      letsencrypt_cert_domains:
+          - example-ctf.win
+          - www.example-ctf.win
+            #- chal.example-ctf.win
+      letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
 
 - hosts: ctf-chal
   roles:
