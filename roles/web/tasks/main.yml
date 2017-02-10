@@ -44,6 +44,15 @@
   become: yes
   file: path=/etc/nginx/site-enabled/default state=absent
 
+- name: copy dhparam
+  become: yes
+  copy:
+    src: files/dhparam.pem
+    dest: /etc/ssl/certs/
+    owner: root
+    group: root
+    mode: 0644
+
 - name: write the ctfd nginx config file
   become: yes
   template:
