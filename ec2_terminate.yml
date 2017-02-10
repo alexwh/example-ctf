@@ -52,7 +52,7 @@
                       zone={{ domain }}
                       record={{ item }}{{ domain }}
                       type=A
-        with_items: ["", "chal."]
+        with_items: ["", "www.", "chal."]
         register: dns
 
       - name: remove dns from route53

@@ -8,7 +8,7 @@
         include_vars:
             dir: vars/
 
-      - name: Launch the new EC2 Instance
+      - name: Launch the new EC2 Instances
         local_action: ec2
                       group={{ security_group }}
                       instance_type={{ instance_type }}
@@ -61,11 +61,12 @@
         local_action: route53
                       command=create
                       zone={{ domain }}
-                      record={{ domain }}
+                      record={{ item }}{{ domain }}
                       type=A
                       ttl=60
                       value={{ ec2.instances[0].public_ip }}
                       overwrite=yes
+        with_items: ["", "www."]
 
       - name: add chal dns to route53
         local_action: route53
