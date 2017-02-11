@@ -15,6 +15,11 @@
   - name: include common vars
     include_vars: vars/common.yml
 
+  - name: check files/letsencrypt
+    local_action: stat
+                  path=files/letsencrypt/
+    register: lefiles
+
   - name: synchronize /etc/letsencrypt
     become: yes
     tags: lesync
@@ -24,6 +29,7 @@
         delete: yes
         checksum: yes
         mode: push
+    when: lefiles.stat.exists and lefiles.stat.isdir
 
   roles:
     - role: web
