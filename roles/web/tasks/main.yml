@@ -66,6 +66,8 @@
 
 - name: copy the ctfd.db
   become: yes
+  tags:
+    - dbcopy
   copy:
     src: files/ctfd.db
     dest: /home/{{ user }}/CTFd/CTFd/
