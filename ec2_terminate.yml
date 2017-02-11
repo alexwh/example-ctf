@@ -20,6 +20,16 @@
             fail_on_missing: yes
             flat: yes
 
+      - name: synchronize /etc/letsencrypt
+        become: yes
+        tags: lesync
+        synchronize:
+            src: /etc/letsencrypt/
+            dest: files/letsencrypt/
+            delete: yes
+            checksum: yes
+            mode: pull
+
   - name: Terminate EC2 instances
     hosts: localhost
     gather_facts: False

@@ -14,6 +14,17 @@
   pre_tasks:
   - name: include common vars
     include_vars: vars/common.yml
+
+  - name: synchronize /etc/letsencrypt
+    become: yes
+    tags: lesync
+    synchronize:
+        src: files/letsencrypt/
+        dest: /etc/letsencrypt/
+        delete: yes
+        checksum: yes
+        mode: push
+
   roles:
     - role: web
     - role: ansible-letsencrypt
