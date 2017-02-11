@@ -79,5 +79,6 @@
       - restart gunicorn
 
 - name: ensure web services are running and enabled
+  become: yes
   service: name={{ item }} state=started enabled=yes
   with_items: [nginx, gunicorn]
