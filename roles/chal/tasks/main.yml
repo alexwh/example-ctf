@@ -1,0 +1,42 @@
+---
+- name: include vars
+  include_vars: common.yml
+
+- name: install packages
+  become: yes
+  action: apt pkg={{ item }} state=installed
+  with_items:
+    - nginx
+
+- name: copy deploy key
+  become: yes
+  copy:
+    src: files/ctf-deploy.pem
+    dest: /root/.ssh/id_rsa
+    owner: root
+    group: root
+    mode: 0600
+
+- name: pull example-ctf-chal
+  become: yes
+  git:
+      repo: git@github.com:alexwh/example-ctf-chal.git
+      dest: /var/www/example-ctf-chal/
+      force: yes
+      accept_hostkey: yes
+
+- name: write the ctfd nginx config file
+  become: yes
+  template:
+    src: files/chal_nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/chal
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+      - restart nginx
+
+- name: ensure web services are running and enabled
+  become: yes
+  service: name={{ item }} state=started enabled=yes
+  with_items: [nginx]

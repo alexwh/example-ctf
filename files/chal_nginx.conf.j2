@@ -1,0 +1,14 @@
+server {
+    listen 80;
+    server_name chal.{{ domain }};
+
+    server_tokens off;
+    root /var/www/example-ctf-chal/webroot;
+    try_files $uri $uri/ =404;
+
+    add_header X-Frame-Options SAMEORIGIN;
+    add_header X-Content-Type-Options nosniff;
+    add_header X-XSS-Protection "1; mode=block";
+    add_header Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; upgrade-insecure-requests; block-all-mixed-content;";
+
+}
