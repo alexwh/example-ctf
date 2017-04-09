@@ -7,4 +7,4 @@
   user:
     name: "{{ user }}"
     system: yes
-    shell: /sbin/nologin
+    shell: /usr/sbin/nologin
