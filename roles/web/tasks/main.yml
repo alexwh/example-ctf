@@ -16,7 +16,7 @@
 - name: pull ctfd
   become: yes
   become_user: "{{ user }}"
-  git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes
+  git: repo=https://github.com/isislab/CTFd.git dest=~/CTFd force=yes version=1.0.1
   register: ctfd_pulled
 
 - name: install pip modules
